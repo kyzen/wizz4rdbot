@@ -1,6 +1,10 @@
 const Discord = require('discord.js');
+const fs = require('fs')
 const client = new Discord.Client();
+
 var prefix = "-";
+
+const warns = JSON.parse(fs.readFileSync('./warns.json'))
 
 client.login('NTMyNjQ0MTA5ODQwNjc4OTEy.Dx0NBA.rw-CPbD-MWnH7X-JcytqYvHfjkk');
 
@@ -90,9 +94,44 @@ client.on("message", message => {
                         SEND_MESSAGES: false
                     })
                 })
-                member.addRole(role)
+                member.addRole(muted)
                 message.channel.send(':white_check_mark: **' + member + '**  a été mute')
             })
         }
+    }
+});
+
+client.on("message", message => {
+    if (!message.guild) return
+    let args = message.content.trim().split(/ +/g)
+ 
+    if (args[0].toLowerCase() === prefix + "warn") {
+        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(":x: **Erreur** ! Raison : Permissions manquantes")
+        let member = message.mentions.members.first()
+        if (!member) return message.channel.send(":x: **Erreur** ! Raison : Aucun utilisateur mentionné")
+        if (member.highestRole.comparePositionTo(message.member.highestRole) < 1 && message.author.id !== message.guild.ownerID) return message.channel.send(":x: **Erreur** ! Raison : Impossible de warns cet utilisateur")
+        let reason = args.slice(2).join(' ')
+        if (!reason) return message.channel.send(":x: **Erreur** ! Raison : Veuillez entrez une raison")
+        if (!warns[member.id]) {
+            warns[member.id] = []
+        }
+        warns[member.id].unshift({
+            reason: reason,
+            date: Date.now(),
+            mod: message.author.id
+        })
+        fs.writeFileSync('./warns.json', JSON.stringify(warns))
+        message.channel.send(member + " a été warn pour " + reason + " :white_check_mark:")
+    }
+ 
+    if (args[0].toLowerCase() === prefix + "infractions") {
+        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send(":x: **Erreur** ! Raison : Permissions manquantes")
+        let member = message.mentions.members.first()
+        if (!member) return message.channel.send(":x: **Erreur** ! Raison : Aucun utilisateur mentionné")
+        let embed = new Discord.RichEmbed()
+            .setAuthor(member.user.username, member.user.displayAvatarURL)
+            .addField('10 derniers warns', ((warns[member.id]) ? warns[member.id].slice(0, 10).map(e => e.reason) : "Ce membre n'a aucun warns"))
+            .setTimestamp()
+        message.channel.send(embed)
     }
 })
