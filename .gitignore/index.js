@@ -15,12 +15,16 @@ client.on('message', message =>{
 });
 
 client.on('message', message =>{
+    if(message.content === prefix + 'aide'){
         let embed = new Discord.RichEmbed()
-        .setColor("0xFF0000")
-        .setDescription(":arrow_right:  Liste des commandes de **Wizz4rdBot")
-        .setFooter("-infobot -> Mes informations")
-        .setFooter("-serverinfo -> Informations sur le serveurs")
-        .setTimestamp
+            .setColor("0xFF0000")
+            .setDescription(":arrow_right:  Liste des commandes de **Wizz4rdBot")
+            .setFooter("-infobot -> Mes informations")
+            .setFooter("-serverinfo -> Informations sur le serveurs")
+            .setTimestamp()
+        message.reply(embed)
+        console.log()
+    }
 });
 
 client.on('guildMemberAdd', member =>{
