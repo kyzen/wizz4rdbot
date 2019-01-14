@@ -9,24 +9,35 @@ const warns = JSON.parse(fs.readFileSync('./warns.json'))
 client.login('NTMyNjQ0MTA5ODQwNjc4OTEy.Dx0NBA.rw-CPbD-MWnH7X-JcytqYvHfjkk');
 
 client.on('message', message =>{
-    if(message.content === "-infobot"){
+    if(message.content === prefix + 'infobot'){
        message.reply("Mon nom est : Wizz4rd Bot , je suis crée et codé par Kyzen ツ depuis le 10/01/19");
     }
+});
+
+client.on('message', message =>{
+        let embed = new Discord.RichEmbed()
+        .setColor("0xFF0000")
+        .setDescription(":arrow_right:  Liste des commandes de **Wizz4rdBot")
+        .setFooter("-infobot -> Mes informations")
+        .setFooter("-serverinfo -> Informations sur le serveurs")
+        .setTimestamp
 });
 
 client.on('guildMemberAdd', member =>{
     let embed = new Discord.RichEmbed()
         .setDescription(':tada:  Bienvenue à **' + member.user.username + '** sur le discord ** ' + member.guild.name + '**')
         .setFooter('Membres actuels : ' + member.guild.memberCount)
+        .setColor("0xFF0000")
     member.guild.channels.get('532639668219543602').send(embed)
     member.addRole('532641191003684866')
  
-});
+}); 
  
 client.on('guildMemberRemove', member =>{
     let embed = new Discord.RichEmbed()
         .setDescription(':wave: **' + member.user.username + '** a quitté le serveur')
         .setFooter('Membres actuels : ' + member.guild.memberCount)
+        .setColor("0xFF0000")
     member.guild.channels.get('532639668219543602').send(embed)
  
 });
