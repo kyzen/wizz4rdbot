@@ -18,11 +18,11 @@ client.on('message', message =>{
     if(message.content === prefix + 'aide'){
         let embed = new Discord.RichEmbed()
             .setColor("0xFF0000")
-            .setDescription(":arrow_right:  Liste des commandes de **Wizz4rdBot")
-            .setFooter("-infobot -> Mes informations")
-            .setFooter("-serverinfo -> Informations sur le serveurs")
+            .setDescription(":arrow_right:  Liste des commandes de **Wizz4rdBot**")
+            .addField("-infobot -> Mes informations")
+            .addField("-serverinfo -> Informations sur le serveurs")
             .setTimestamp()
-        message.reply(embed)
+        message.channel.send(embed)
         console.log()
     }
 });
